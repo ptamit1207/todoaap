@@ -5,9 +5,12 @@
  * @format
  */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React ,{useState}from 'react';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
+
+
+
 import {
   
   Text,
@@ -17,14 +20,40 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  FlatList,
+  
   
 } from 'react-native';
 
 
-function App(): JSX.Element {
+function App() {
+
+  const users =[
+    {
+      id:1,
+      name:"Amit",
+    },
+    {
+      id:1,
+      name:"Amit",
+    }
+  ]
   
   return (
+
+
+    
     <SafeAreaView>
+      <View>
+  <FlatList
+    data = {users}
+    renderItem={({item})=><Text style={{fontSize:20,borderWidth:5,padding:5,backgroundColor:"yellow"}}>{item.id}</Text>}
+    
+  />
+</View>
+
+
+
     <View >
      <View style={styles.addtask} >
       <View>
@@ -32,10 +61,13 @@ function App(): JSX.Element {
       
       </View>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        
       <TextInput
         style={{ flex: 1, borderColor: 'green', borderWidth: 5, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16}}
         placeholder="Enter text"
+        
       />
+      
       
       <Icon name="tasks" size={30} color="green" style={{ position: 'absolute',right:30}} />
     </View>
@@ -93,12 +125,15 @@ function App(): JSX.Element {
       <Icon name="trash" size={30} color="red" style={{ position: 'absolute', right:80, paddingTop:30  }} />
     </View>
       </View>
+
       
       
       
    </SafeAreaView>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
