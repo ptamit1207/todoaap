@@ -7,6 +7,7 @@
 
 import React ,{useState}from 'react';
 
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
@@ -21,40 +22,57 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  Alert,
+  myNotesArray,
+  renderItemList,
+  onSubmitPress,
+  onChangeText,
+  myNotes,
+  
+  
   
   
 } from 'react-native';
 
 
 function App() {
+const todoApp = () =>{
 
-  const users =[
-    {
-      id:1,
-      name:"Amit",
-    },
-    {
-      id:1,
-      name:"Amit",
-    }
-  ]
+  const [myNotes,setMyNotes]= useState("")
+  const [myNotesArray,setMyNotesArray]= useState([])
+
+
+  const onSubmitPress = () => {
+  var myNotesObject  = {
+          id :new Date(),
+          title : myNotes,
+          details : "demo",
+
+  }
+
+  setMyNotesArray([...myNotesArray,myNotesObject])
+}
+
+   const renderItemList = () => {
+
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <TextInput
+        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
+        paddingVertical:20,
+        marginHorizontal:10,
+        marginTop:40,
+        backgroundColor:"#d1d1d1"}}
+        
+      />
+    </View>
+   }
+
+}
+  
   
   return (
-
-
-    
-    <SafeAreaView>
-      <View>
-  <FlatList
-    data = {users}
-    renderItem={({item})=><Text style={{fontSize:20,borderWidth:5,padding:5,backgroundColor:"yellow"}}>{item.id}</Text>}
-    
-  />
-</View>
-
-
-
-    <View >
+     <SafeAreaView>
+  <View >
      <View style={styles.addtask} >
       <View>
       <Text style={styles.todo}>To Do App</Text>
@@ -63,75 +81,43 @@ function App() {
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
         
       <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 5, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16}}
-        placeholder="Enter text"
+       
+       style={styles.taskbox}
+       onChangeText={value=>{
+        setMyNotes=(value)
+      }}
+      value={myNotes}
+       keyboardType='numaric'
+       placeholder='My tasks'
         
       />
-      
-      
-      <Icon name="tasks" size={30} color="green" style={{ position: 'absolute',right:30}} />
     </View>
-      
-      
+    </View>
+    </View>
+  <TouchableOpacity
+  style={styles.submit}
+  onSubmitPress={()=>onSubmitPress()} >
+  <Text>SUBMIT</Text>
+  </TouchableOpacity>
 
-      
-      </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
-        paddingVertical:20,
-        marginHorizontal:10,
-        marginTop:40,
-        backgroundColor:"#d1d1d1"}}
-        placeholder="Write a Note"
-      />
-      <Icon name="edit" size={30} color="blue" style={{ position: 'absolute', right: 20,paddingTop:35}} />
-      <Icon name="trash" size={30} color="red" style={{ position: 'absolute', right:80, paddingTop:30  }} />
-    </View>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
-        paddingVertical:20,
-        marginHorizontal:10,
-        marginTop:40,
-        backgroundColor:"#d1d1d1"}}
-        placeholder="Write a Note"
-      />
-      <Icon name="edit" size={30} color="blue" style={{ position: 'absolute', right: 20,paddingTop:35}} />
-      <Icon name="trash" size={30} color="red" style={{ position: 'absolute', right:80, paddingTop:30  }} />
-    </View>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
-        paddingVertical:20,
-        marginHorizontal:10,
-        marginTop:40,
-        backgroundColor:"#d1d1d1"}}
-        placeholder="Write a Note"
-      />
-      <Icon name="edit" size={30} color="blue" style={{ position: 'absolute', right: 20,paddingTop:35}} />
-      <Icon name="trash" size={30} color="red" style={{ position: 'absolute', right:80, paddingTop:30  }} />
-    </View>
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
-        paddingVertical:20,
-        marginHorizontal:10,
-        marginTop:40,
-        backgroundColor:"#d1d1d1"}}
-        placeholder="Write a Note"
-      />
-      <Icon name="edit" size={30} color="blue" style={{ position: 'absolute', right: 20,paddingTop:35}} />
-      <Icon name="trash" size={30} color="red" style={{ position: 'absolute', right:80, paddingTop:30  }} />
-    </View>
-      </View>
-
-      
-      
-      
-   </SafeAreaView>
+  <FlatList
+  data={myNotesArray}
+  renderItem={renderItemList}
+  keyExtractor={item=>item.id}
+  />
+  </SafeAreaView>
   );
+
+   
 }
+const onsubmitAddToList = () =>{
+  var myNotesData = {
+    id: new Date(),
+    title:myNotes,
+    detail:'this is amit',
+  }
+  setMyNotesArray([...myNotesArray,myNotesData])
+ }
 
 
 
@@ -150,6 +136,31 @@ const styles = StyleSheet.create({
 
 
   },
+  submit:{
+    height:50,
+    width:200,
+    backgroundColor:'blue',
+    marginLeft:100,
+    marginVertical:20,
+    position:'relative',
+    alignItems:'center',
+    paddingTop:13,
+    borderRadius:5,
+    color:'pink',
+    
+    
+  },
+  taskbox:{
+    borderWidth:2,
+    height:60,
+    width:370,
+    borderRadius:7,
+    padding:10,
+  },
+  onsubmit:{
+  color:'pink',
+  },
+
   
   addtask: {
     
