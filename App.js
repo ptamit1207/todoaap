@@ -25,7 +25,7 @@ import {
   Alert,
   myNotesArray,
   renderItemList,
-  onSubmitPress,
+  
   onChangeText,
   myNotes,
   
@@ -36,158 +36,115 @@ import {
 
 
 function App() {
-const todoApp = () =>{
+  // Define state variables
+  const [myNotes, setMyNotes] = useState('');
+  const [myNotesArray, setMyNotesArray] = useState([]);
 
-  const [myNotes,setMyNotes]= useState("")
-  const [myNotesArray,setMyNotesArray]= useState([])
-
-
+  // Function to handle form submission
   const onSubmitPress = () => {
-  var myNotesObject  = {
-          id :new Date(),
-          title : myNotes,
-          details : "demo",
+    if (myNotes !== '') {
+      // Create a new note object
+      const myNotesObject = {
+        id: new Date().toString(),
+        title: myNotes,
+        details: 'demo',
+      };
 
-  }
+      // Update the notes array
+      setMyNotesArray([...myNotesArray, myNotesObject]);
 
-  setMyNotesArray([...myNotesArray,myNotesObject])
-}
+      // Clear the input field
+      setMyNotes('');
+    } else {
+      // Show an alert if the input is empty
+      Alert.alert('Error', 'Please enter a task.');
+    }
+  };
 
-   const renderItemList = () => {
-
-    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-      <TextInput
-        style={{ flex: 1, borderColor: 'green', borderWidth: 3, paddingRight: 30 ,borderRadius:5,paddingHorizontal:16,
-        paddingVertical:20,
-        marginHorizontal:10,
-        marginTop:40,
-        backgroundColor:"#d1d1d1"}}
-        
-      />
-    </View>
-   }
-
-}
-  
-  
-  return (
-     <SafeAreaView>
-  <View >
-     <View style={styles.addtask} >
-      <View>
-      <Text style={styles.todo}>To Do App</Text>
-      
+  // Function to render individual items in the FlatList
+  const renderItemList = ({ item }) => {
+    return (
+      <View style={styles.container}>
+        <Text>{item.title}</Text>
       </View>
-      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        
-      <TextInput
-       
-       style={styles.taskbox}
-       onChangeText={value=>{
-        setMyNotes=(value)
-      }}
-      value={myNotes}
-       keyboardType='numaric'
-       placeholder='My tasks'
-        
+    );
+  };
+
+  return (
+    <SafeAreaView>
+      <View style={styles.addtask}>
+        <Text style={styles.todo}>To Do App</Text>
+        <TextInput
+          clearButtonMode="always"
+          style={styles.taskbox}
+          onChangeText={(value) => {
+            setMyNotes(value);
+          }}
+          value={myNotes}
+          placeholder='My tasks'
+        />
+      </View>
+
+      <TouchableOpacity style={styles.submit} onPress={onSubmitPress}>
+        <Text>SUBMIT</Text>
+      </TouchableOpacity>
+
+      <FlatList
+        data={myNotesArray}
+        renderItem={renderItemList}
+        keyExtractor={(item) => item.id}
       />
-    </View>
-    </View>
-    </View>
-  <TouchableOpacity
-  style={styles.submit}
-  onSubmitPress={()=>onSubmitPress()} >
-  <Text>SUBMIT</Text>
-  </TouchableOpacity>
-
-  <FlatList
-  data={myNotesArray}
-  renderItem={renderItemList}
-  keyExtractor={item=>item.id}
-  />
-  </SafeAreaView>
+    </SafeAreaView>
   );
-
-   
 }
-const onsubmitAddToList = () =>{
-  var myNotesData = {
-    id: new Date(),
-    title:myNotes,
-    detail:'this is amit',
-  }
-  setMyNotesArray([...myNotesArray,myNotesData])
- }
-
-
 
 const styles = StyleSheet.create({
   container: {
-    
-    
-    borderWidth:5,
-    borderColor:"green",
-    borderRadius:6,
-    paddingVertical:20,
-    paddingHorizontal:16,
-    marginHorizontal:10,
-    marginTop:40,
-    backgroundColor:"#ffd700"
-
-
+    borderWidth: 5,
+    borderColor: 'green',
+    borderRadius: 6,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    marginHorizontal: 10,
+    marginTop: 10, // Changed this to provide some space between items
+    backgroundColor: '#ffd700',
   },
-  submit:{
-    height:50,
-    width:200,
-    backgroundColor:'blue',
-    marginLeft:100,
-    marginVertical:20,
-    position:'relative',
-    alignItems:'center',
-    paddingTop:13,
-    borderRadius:5,
-    color:'pink',
-    
-    
+  submit: {
+    height: 50,
+    width: 200,
+    backgroundColor: 'blue',
+    marginLeft: 100,
+    marginVertical: 20,
+    position: 'relative',
+    alignItems: 'center',
+    paddingTop: 13,
+    borderRadius: 5,
   },
-  taskbox:{
-    borderWidth:2,
-    height:60,
-    width:370,
-    borderRadius:7,
-    padding:10,
+  taskbox: {
+    borderWidth: 2,
+    height: 60,
+    width: 370,
+    borderRadius: 7,
+    padding: 10,
   },
-  onsubmit:{
-  color:'pink',
-  },
-
-  
   addtask: {
-    
-    marginHorizontal:20,
+    marginHorizontal: 20,
   },
   todo: {
-    textAlignVertical: "center",
-    textAlign: "center",
-    marginBottom:30,
-    marginTop:20,
-    fontSize:20,
-    fontWeight:'bold',
-    backgroundColor:'lightgreen',
-    color:"black",
-    borderWidth:3,
-    padding:20,
-    borderRadius:20,
-
+    textAlignVertical: 'center',
+    textAlign: 'center',
+    marginBottom: 30,
+    marginTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: 'lightgreen',
+    color: 'black',
+    borderWidth: 3,
+    padding: 20,
+    borderRadius: 20,
   },
- 
-  iconedit:{
+});
 
-  }
-  
- 
-
-})
 export default App;
 
 
